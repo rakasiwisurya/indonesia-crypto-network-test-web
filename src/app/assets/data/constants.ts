@@ -4,3 +4,6 @@ export const userKey = "user";
 
 // Unauthorization pages
 export const unauthorizationPages = ["/login", "/register"];
+
+// Status
+export const statuses = ["Todo", "In Progress", "Done"];

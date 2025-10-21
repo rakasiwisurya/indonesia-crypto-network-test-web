@@ -23,8 +23,7 @@ const useLogin = () => {
   const onLogin: FormProps<TFormLogin>["onFinish"] = async values => {
     const data = {
       email: values.email,
-      // password: SHA1Hash(values.password),
-      password: values.password,
+      password: SHA1Hash(values.password),
     };
 
     try {

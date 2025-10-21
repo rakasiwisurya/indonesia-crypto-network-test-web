@@ -1,4 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks/redux";
+import { SHA1Hash } from "@/app/libs/crypto";
 import { notif } from "@/app/libs/notification";
 import { register, resetRegister } from "@/app/redux/features/authSlice";
 import { TFormRegister } from "@/app/types/auth";
@@ -13,14 +14,17 @@ const useRegister = () => {
   const { isRegisterLoading, registerSuccess } = useAppSelector(state => state.auth);
 
   useEffect(() => {
-    if (registerSuccess) dispatch(resetRegister());
-  }, [registerSuccess, dispatch]);
+    if (registerSuccess) {
+      dispatch(resetRegister());
+      router.push("/login");
+    }
+  }, [registerSuccess, router, dispatch]);
 
   const onRegister: FormProps<TFormRegister>["onFinish"] = async values => {
     const data = {
       name: values.name,
       email: values.email,
-      password: values.password,
+      password: SHA1Hash(values.password),
     };
 
     try {
