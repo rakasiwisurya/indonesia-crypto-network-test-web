@@ -38,7 +38,7 @@ const useDashboard = () => {
         title: "Task Description",
         dataIndex: "task_desc",
         key: "task_desc",
-        render: text => <div className="w-50 truncate">{text}</div>,
+        render: text => <div className="w-72 truncate">{text}</div>,
       },
       {
         title: "Due Date",
