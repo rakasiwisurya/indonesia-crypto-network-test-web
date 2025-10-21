@@ -14,6 +14,7 @@ const useDashboard = () => {
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
+  const [isModalGenerateOpen, setIsModalGenerateOpen] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
@@ -111,6 +112,8 @@ const useDashboard = () => {
     setDeleteId(null);
   }, []);
 
+  const onCancelGenerate = () => setIsModalGenerateOpen(false);
+
   const onDelete = () => {
     dispatch(deleteTask({ id: deleteId }));
   };
@@ -147,14 +150,17 @@ const useDashboard = () => {
     isModalAddOpen,
     isModalEditOpen,
     isModalDeleteOpen,
+    isModalGenerateOpen,
     getData,
     onCancelAdd,
     onCancelEdit,
     onCancelDelete,
+    onCancelGenerate,
     onDelete,
     onSearch,
     onClear,
     setIsModalAddOpen,
+    setIsModalGenerateOpen,
   };
 };
 

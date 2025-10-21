@@ -95,6 +95,20 @@ export const deleteTask = createAsyncThunk(
   }
 );
 
+export const generateTask = createAsyncThunk("task/generateTask", async (_, thunkAPI) => {
+  try {
+    const response = await requestApi({
+      method: "post",
+      endpoint: `/ai-suggestion`,
+    });
+
+    return response.data;
+  } catch (error: any) {
+    console.error(error);
+    return thunkAPI.rejectWithValue(error?.response?.data?.message || error.message);
+  }
+});
+
 const initialState: TTaskState = {
   tasks: [],
   isTasksLoading: true,
@@ -117,6 +131,14 @@ const initialState: TTaskState = {
   isTaskDeleteLoading: false,
   taskDeleteSuccess: null,
   taskDeleteError: null,
+
+  taskGenerate: {
+    task_name: null,
+    task_desc: null,
+  },
+  isTaskGenerateLoading: true,
+  taskGenerateSuccess: null,
+  taskGenerateError: null,
 };
 
 const taskSlice = createSlice({
@@ -154,6 +176,16 @@ const taskSlice = createSlice({
       state.isTaskDeleteLoading = false;
       state.taskDeleteSuccess = null;
       state.taskDeleteError = null;
+    },
+    resetGenerateTask: state => {
+      state.taskGenerate = {
+        task_name: null,
+        task_desc: null,
+      };
+
+      state.isTaskGenerateLoading = false;
+      state.taskGenerateSuccess = null;
+      state.taskGenerateError = null;
     },
   },
   extraReducers: builder => {
@@ -240,10 +272,32 @@ const taskSlice = createSlice({
 
         state.taskDeleteSuccess = action.payload?.message;
         state.isTaskDeleteLoading = false;
+      })
+
+      .addCase(generateTask.pending, state => {
+        state.taskGenerateSuccess = null;
+        state.taskGenerateError = null;
+        state.isTaskGenerateLoading = true;
+      })
+      .addCase(generateTask.rejected, (state, action) => {
+        state.taskGenerateError = action.payload;
+        state.isTaskGenerateLoading = false;
+      })
+      .addCase(generateTask.fulfilled, (state, action) => {
+        state.taskGenerate = action.payload.data;
+        state.taskGenerateSuccess = action.payload?.message;
+        state.isTaskGenerateLoading = false;
       });
   },
 });
 
-export const { setTask, resetTasks, resetTask, resetAddTask, resetUpdateTask, resetDeleteTask } =
-  taskSlice.actions;
+export const {
+  setTask,
+  resetTasks,
+  resetTask,
+  resetAddTask,
+  resetUpdateTask,
+  resetDeleteTask,
+  resetGenerateTask,
+} = taskSlice.actions;
 export const taskReducer = taskSlice.reducer;

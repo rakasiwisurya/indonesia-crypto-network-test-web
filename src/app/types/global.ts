@@ -1,4 +1,4 @@
-import { ModalProps } from "antd";
+import { FormInstance, ModalProps } from "antd";
 
 export type TModalAdd = {
   isModalOpen: boolean;
@@ -24,6 +24,12 @@ export type TUseModalEdit = {
   isModalOpen: boolean;
   onCancel: () => void;
   refreshData: () => void;
+};
+
+export type TModalGenerate = {
+  form: FormInstance<any>;
+  isModalOpen: boolean;
+  onCancel: () => void;
 };
 
 export type TModalConfirmation = {
