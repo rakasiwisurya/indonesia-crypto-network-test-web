@@ -7,7 +7,7 @@ import { useForm } from "antd/es/form/Form";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 
-const useModalAddDashboard = ({ onCancel, refreshData }: TUseModalAdd) => {
+const useModalAddDashboard = ({ isModalOpen, onCancel, refreshData }: TUseModalAdd) => {
   const [form] = useForm();
 
   const [isModalGenerateOpen, setIsModalGenerateOpen] = useState(false);
@@ -31,7 +31,12 @@ const useModalAddDashboard = ({ onCancel, refreshData }: TUseModalAdd) => {
   }, [dispatch]);
 
   useEffect(() => {
+    if (isModalOpen) form.resetFields();
+  }, [isModalOpen]);
+
+  useEffect(() => {
     if (taskAddSuccess) {
+      form.resetFields();
       refreshData();
       dispatch(resetAddTask());
       onCancel();
